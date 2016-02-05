@@ -301,7 +301,9 @@ public class Runtime implements UnreportedStepExecutor {
                 error = t;
                 status = isPending(t) ? "pending" : Result.FAILED;
                 addError(t);
-                skipNextStep = true;
+                if (!(t instanceof NullPointerException)) {
+                    skipNextStep = true;
+                }
             } finally {
                 long duration = stopWatch.stop();
                 Result result = new Result(status, duration, error, DUMMY_ARG);
