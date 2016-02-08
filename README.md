@@ -9,8 +9,9 @@ In this case, the failure of one of the checks will let the other independent ch
 The failed step is still marked as failed in the execution result.
 
 To mark a step as being unimportant for the next steps, you need to annotate the step definition with the following annotation:
-@ContinueNextStepsFor({AssertionError.class, NullPointerException.class })
+@ContinueNextStepsFor({AssertionError.class})
 If another exception is thrown, then the next steps are not executed.
+
 ![Screenshot](/fork-purpose.png)
 
 [![Build Status](https://secure.travis-ci.org/cucumber/cucumber-jvm.png)](http://travis-ci.org/cucumber/cucumber-jvm)
