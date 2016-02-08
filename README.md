@@ -18,26 +18,26 @@ If another exception is thrown, then the next steps are not executed.
 This works only for Java. This is not implemented for other JVM languages. If you need them, you're encouraged to [compare the code of this branch with cucumber-jvm master branch](https://github.com/cucumber/cucumber-jvm/compare/master...slaout:continue-next-steps-for-exceptions?expand=1) to see how it's implemented (it really only a few lines of code). Feel free to post patches of pull requests to make it work with other languages: I did not have the time not the knowledge to implement the solution for all languages.
 
 ## Usage
-This project is based on Cucumber-JVM 1.2.5-SNAPSHOT.
+This project is based on Cucumber-JVM 1.2.5-SNAPSHOT, and all of its artifactId are available in the new groupId "com.github.slaout.fork.info.cukes".
 Include the following dependencies:
 ```xml
 <dependency>
-  <groupId>info.cukes</groupId>
+  <groupId>com.github.slaout.fork.info.cukes</groupId>
   <artifactId>cucumber-core</artifactId>
   <version>1.2.5-SNAPSHOT</version>
 </dependency>
 <dependency>
-  <groupId>info.cukes</groupId>
+  <groupId>com.github.slaout.fork.info.cukes</groupId>
   <artifactId>cucumber-java</artifactId>
   <version>1.2.5-SNAPSHOT</version>
 </dependency>
 <dependency>
-  <groupId>info.cukes</groupId>
+  <groupId>com.github.slaout.fork.info.cukes</groupId>
   <artifactId>cucumber-spring</artifactId>
   <version>1.2.5-SNAPSHOT</version>
 </dependency>
 <dependency>
-  <groupId>info.cukes</groupId>
+  <groupId>com.github.slaout.fork.info.cukes</groupId>
   <artifactId>cucumber-junit</artifactId>
   <version>1.2.5-SNAPSHOT</version>
 </dependency>
@@ -45,7 +45,7 @@ Include the following dependencies:
 
 For the moment, this is not published on Maven Central.
 Clone the Git project on your machine, run "mvn -DskipTests=true clean install" in command-line, and you can use it on your machine.
-For other members of your team, copy the content your the folder "~/.m2/repository/info/cukes" to their machine for them to use it.
+For other members of your team, copy the content your the folder "~/.m2/repository/com/github/slaout/fork/info/cukes" to their machine for them to use it.
 
 ## See Also
 * [The thread on Cucumber forum](https://groups.google.com/forum/#!topic/cukes/xTqSyR1qvSc) proposing this solution, with explanations of the main developers on why this is a bad idea and how to refactor the tests to not use this fork. Please read the thread before using this fork: use the fork if you really need it.
