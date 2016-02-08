@@ -158,4 +158,8 @@ public class StepDefinitionMatch extends Match {
     public String getStepName() {
         return step.getName();
     }
+
+    public boolean continueNextStepsAnyway(Throwable throwable) {
+        return stepDefinition.continueNextStepsAnyway(throwable);
+    }
 }

@@ -82,4 +82,9 @@ class ScalaStepDefinition(frame:StackTraceElement,
   def getPattern = pattern
 
   def isScenarioScoped = false
+
+  // TODO How to handle annotations in Groovy?
+  // If not possible, we could add a ContinueNextStepsException (and make it continueAnyway
+  // by default, without the need of an annotation)
+  def continueNextStepsAnyway(throwable: Throwable) = false
 }

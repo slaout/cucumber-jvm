@@ -1,5 +1,6 @@
 package cucumber.runtime.java;
 
+import cucumber.api.java.ContinueNextStepsFor;
 import cucumber.api.java8.StepdefBody;
 import cucumber.runtime.JdkPatternArgumentMatcher;
 import cucumber.runtime.ParameterInfo;
@@ -9,6 +10,7 @@ import gherkin.I18n;
 import gherkin.formatter.Argument;
 import gherkin.formatter.model.Step;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -91,5 +93,19 @@ public class Java8StepDefinition implements StepDefinition {
     @Override
     public boolean isScenarioScoped() {
         return true;
+    }
+
+    @Override
+    public boolean continueNextStepsAnyway(Throwable throwable) {
+        for (Annotation annotation : method.getAnnotations()) {
+            if (annotation instanceof ContinueNextStepsFor) {
+                for (Class<? extends Throwable> annotationThrowableClass : ((ContinueNextStepsFor) annotation).value()) {
+                    if (annotationThrowableClass.isAssignableFrom(throwable.getClass())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

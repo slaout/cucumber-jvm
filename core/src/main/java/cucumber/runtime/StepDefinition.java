@@ -58,4 +58,12 @@ public interface StepDefinition {
      * @return true if this instance is scoped to a single scenario, or false if it can be reused across scenarios.
      */
     boolean isScenarioScoped();
+
+    /**
+     * @param throwable thrown by a step definition execution
+     * @return true if the {@code throwable} allows to continue next step executions anyway (the
+     * current step is still marked as failed, but a failure of the step for this exception is
+     * recoverable, typically an AssertError)
+     */
+    boolean continueNextStepsAnyway(Throwable throwable);
 }

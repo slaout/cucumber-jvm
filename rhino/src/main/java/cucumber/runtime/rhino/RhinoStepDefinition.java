@@ -88,4 +88,12 @@ public class RhinoStepDefinition implements StepDefinition {
     public boolean isScenarioScoped() {
         return false;
     }
+
+    @Override
+    public boolean continueNextStepsAnyway(Throwable throwable) {
+        // TODO How to handle annotations in Rhino?
+        // If not possible, we could add a ContinueNextStepsException (and make it continueAnyway
+        // by default, without the need of an annotation)
+        return false;
+    }
 }

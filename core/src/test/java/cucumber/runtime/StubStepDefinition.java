@@ -60,4 +60,9 @@ public class StubStepDefinition implements StepDefinition {
     public boolean isScenarioScoped() {
         return false;
     }
+
+    @Override
+    public boolean continueNextStepsAnyway(Throwable throwable) {
+        return false;
+    }
 }

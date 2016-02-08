@@ -153,6 +153,11 @@ public class StepdefGeneratorTest {
             public boolean isScenarioScoped() {
                 return false;
             }
+
+            @Override
+            public boolean continueNextStepsAnyway(Throwable throwable) {
+                return false;
+            }
         };
     }
 
