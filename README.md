@@ -1,3 +1,18 @@
+# Cucumber JVM Fork to Continue Next Steps for Predefined Exceptions
+The whole purpose of this fork is to be able to continue the execution of the next steps of a scenario when one step fails and we know the next ones still can be executed.
+
+This possibility is disabled by default.
+It is up to the step definition developer to declare if the step failure will not impede the next steps.
+
+This is the case when you have an expensive @Given and/or @When, and you want to execute a lot of @Then checks.
+In this case, the failure of one of the checks will let the other independent checks to run as well: no failure is hidden by a previous failure.
+The failed step is still marked as failed in the execution result.
+
+To mark a step as being unimportant for the next steps, you need to annotate the step definition with the following annotation:
+@ContinueNextStepsFor({AssertionError.class, NullPointerException.class })
+If another exception is thrown, then the next steps are not executed.
+![Screenshot][fork-purpose.png]
+
 [![Build Status](https://secure.travis-ci.org/cucumber/cucumber-jvm.png)](http://travis-ci.org/cucumber/cucumber-jvm)
 [![Join the chat at https://gitter.im/cucumber/cucumber-jvm](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/cucumber-jvm?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
