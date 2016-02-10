@@ -68,6 +68,22 @@ Then include the following dependencies in your project's pom.xml:
 Yes, it is marked as SNAPSHOT, but this is the official final 1.2.4 realease, with the little fork additions.
 My time was limited on this fork in my company, so for the moment, I did not complete all the requierements to publish a non-SNAPSHOT release and to publish it on Maven Central.
 
+## Recommendations for Using the Annotation
+As you know, "with great power comes great responsibility".
+Here are some guidelines about using this "new super-power" wisely:
+* Add @ContinueNextStepsFor only for @Then steps.
+  If you use asserts in @Given, it’s only to check the environment is in a good and known state before starting the test. So if the assert fails, the next steps must not be executed.
+  If you use asserts in @When steps, you’re really not supposed to!
+* Ask yourself if the assert step is there to prevent execution of next steps.
+  Do not use @ContinueNextStepsFor if the answer is yes.
+  For instance "When I click ADD TO CART ; Then there is no error ; And I to go my cart" => "there is no error" must not have @ContinueNextStepsFor
+* It's OK to add the annotation on "Then the product VisibleProduct is displayed" when checking for visibility of products.
+  It's not OK to add the annotation on "Then the product VisibleProduct is displayed" if it's a prerequisite of next steps (because this Then should have been, or is seen as, a Given)
+* Restrict @ContinueNextStepsFor to ONLY AssertionError.class.
+  And in no case to Exception.class (and do not even think about Throwable.class)
+* If a step gets an object and asserts on one of its properties, do not add NullPointerException like this: @ContinueNextStepsFor({AssertionError.class, NullPointerException.class})
+  Instead, use assertThat(object).isNotNull(); before the assert to execute next steps if the object is not found, and use only @ContinueNextStepsFor(AssertionError.class)
+
 ## See Also
 * [The thread on Cucumber forum](https://groups.google.com/forum/#!topic/cukes/xTqSyR1qvSc) proposing this solution, with explanations of the main developers on why this is a bad idea and how to refactor the tests to not use this fork. Please read the thread before using this fork: use the fork if you really need it.
 * [How to rework your tests to avoid using this fork](https://github.com/cucumber/cucumber-jvm/issues/771) this thread (the comment "dkowis commented on 4 Sep 2014", to be more precise) also explains how to rework your feature files to avoid using this fork. Still want to use this fork? Now, that's fine, you can use it, you've been warned ;-)
