@@ -19,33 +19,54 @@ This works only for Java. This is not implemented for other JVM languages. If yo
 
 ## Usage
 This project is based on Cucumber-JVM 1.2.4, and all of its artifactId are available in the new groupId "com.github.slaout.fork.info.cukes".
-Include the following dependencies:
+
+First add the following repository to your user's settings.xml or to your project's pom.xml:
+```xml
+<repositories>
+  <repository>
+    <id>OSSRH</id>
+    <name>Open Source Project Repository Hosting</name>
+    <releases>
+      <enabled>true</enabled>
+      <updatePolicy>always</updatePolicy>
+      <checksumPolicy>warn</checksumPolicy>
+    </releases>
+    <snapshots>
+      <enabled>true</enabled>
+      <updatePolicy>always</updatePolicy>
+      <checksumPolicy>warn</checksumPolicy>
+    </snapshots>
+    <url>https://oss.sonatype.org/content/groups/public/</url>
+    <layout>default</layout>
+  </repository>
+</repositories>
+```
+
+Then include the following dependencies in your project's pom.xml:
 ```xml
 <dependency>
   <groupId>com.github.slaout.fork.info.cukes</groupId>
   <artifactId>cucumber-core</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.4-SNAPSHOT</version>
 </dependency>
 <dependency>
   <groupId>com.github.slaout.fork.info.cukes</groupId>
   <artifactId>cucumber-java</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.4-SNAPSHOT</version>
 </dependency>
 <dependency>
   <groupId>com.github.slaout.fork.info.cukes</groupId>
   <artifactId>cucumber-spring</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.4-SNAPSHOT</version>
 </dependency>
 <dependency>
   <groupId>com.github.slaout.fork.info.cukes</groupId>
   <artifactId>cucumber-junit</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.4-SNAPSHOT</version>
 </dependency>
 ```
-
-For the moment, this is not published on Maven Central.
-Clone the Git project on your machine, run "mvn -DskipTests=true clean install" in command-line, and you can use it on your machine.
-For other members of your team, copy the content your the folder "~/.m2/repository/com/github/slaout/fork/info/cukes" to their machine for them to use it.
+Yes, it is marked as SNAPSHOT, but this is the official final 1.2.4 realease, with the little fork additions.
+My time was limited on this fork in my company, so for the moment, I did not complete all the requierements to publish a non-SNAPSHOT release and to publish it on Maven Central.
 
 ## See Also
 * [The thread on Cucumber forum](https://groups.google.com/forum/#!topic/cukes/xTqSyR1qvSc) proposing this solution, with explanations of the main developers on why this is a bad idea and how to refactor the tests to not use this fork. Please read the thread before using this fork: use the fork if you really need it.
