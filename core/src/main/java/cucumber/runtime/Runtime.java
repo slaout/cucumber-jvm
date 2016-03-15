@@ -5,6 +5,7 @@ import cucumber.api.StepDefinitionReporter;
 import cucumber.api.SummaryPrinter;
 import cucumber.runtime.io.ResourceLoader;
 import cucumber.runtime.model.CucumberFeature;
+import cucumber.runtime.threaded.ThreadedRuntime;
 import cucumber.runtime.xstream.LocalizedXStreams;
 import gherkin.I18n;
 import gherkin.formatter.Argument;
@@ -33,7 +34,7 @@ import java.util.Set;
  */
 public class Runtime implements UnreportedStepExecutor {
 
-    private static final String[] PENDING_EXCEPTIONS = new String[]{
+    private static final String[] PENDING_EXCEPTIONS = new String[]{// THREAD SAFE
             "org.junit.internal.AssumptionViolatedException"
     };
 
@@ -41,25 +42,27 @@ public class Runtime implements UnreportedStepExecutor {
         Arrays.sort(PENDING_EXCEPTIONS);
     }
 
-    private static final Object DUMMY_ARG = new Object();
-    private static final byte ERRORS = 0x1;
+    private static final Object DUMMY_ARG = new Object();// THREAD SAFE
+    private static final byte ERRORS = 0x1;// THREAD SAFE
 
-    private final Stats stats;
-    final UndefinedStepsTracker undefinedStepsTracker = new UndefinedStepsTracker();
+    private final Stats stats;// THREAD SYNCHRONIZED (only appends to lists and sums, in an unordered way)
+    final UndefinedStepsTracker undefinedStepsTracker = new UndefinedStepsTracker();// TODO THREAD THREADLOCAL + added to the glue
 
-    private final Glue glue;
-    private final RuntimeOptions runtimeOptions;
+    private final Glue glue;// THREAD SAFE IN run() (no modification in there)
+                            // TODO Sort of... Because stepDefinitionMatch(String featurePath, Step step, I18n i18n) modifies its UndefinedStepsTracker tracker!!!!
+                            // TODO AND !!!=> glue.removeScenarioScopedGlue();
+    private final RuntimeOptions runtimeOptions;// THREAD SAFE
 
-    private final List<Throwable> errors = new ArrayList<Throwable>();
-    private final Collection<? extends Backend> backends;
-    private final ResourceLoader resourceLoader;
-    private final ClassLoader classLoader;
-    private final StopWatch stopWatch;
+    private final List<Throwable> errors = new ArrayList<Throwable>();// THREAD SYNCHRONIZED WHEN ADDING (WE'RE NOT REMOVING)
+    private final Collection<? extends Backend> backends;// TODO THREAD THREADLOCAL??? Used in buildWorld() & disposeWorld()
+    private final ResourceLoader resourceLoader;// THREAD SAFE
+    private final ClassLoader classLoader;// THREAD SAFE
+    private final StopWatch stopWatch;// THREAD SAFE: StopWatch.SYSTEM is using ThreadLocal and StopWatch.Stub is using a fixed duration
 
     //TODO: These are really state machine variables, and I'm not sure the runtime is the best place for this state machine
     //They really should be created each time a scenario is run, not in here
-    private boolean skipNextStep = false;
-    private ScenarioImpl scenarioResult = null;
+    private ThreadLocal<Boolean> skipNextStep = new ThreadLocal<Boolean>();// THREAD THREADLOCAL
+    private ThreadLocal<ScenarioImpl> scenarioResult = new ThreadLocal<ScenarioImpl>();// THREAD THREADLOCAL
 
     public Runtime(ResourceLoader resourceLoader, ClassFinder classFinder, ClassLoader classLoader, RuntimeOptions runtimeOptions) {
         this(resourceLoader, classLoader, loadBackends(resourceLoader, classFinder), runtimeOptions);
@@ -99,7 +102,9 @@ public class Runtime implements UnreportedStepExecutor {
     }
 
     public void addError(Throwable error) {
-        errors.add(error);
+        synchronized (errors) {
+            errors.add(error);
+        }
     }
 
     /**
@@ -117,8 +122,13 @@ public class Runtime implements UnreportedStepExecutor {
 
         glue.reportStepDefinitions(stepDefinitionReporter);
 
-        for (CucumberFeature cucumberFeature : features) {
-            cucumberFeature.run(formatter, reporter, this);
+        int threads = 2;
+        if (threads > 1) {
+            ThreadedRuntime.run(features, formatter, reporter, this);
+        } else {
+            for (CucumberFeature cucumberFeature : features) {
+                cucumberFeature.run(formatter, reporter, this);
+            }
         }
 
         formatter.done();
@@ -132,7 +142,9 @@ public class Runtime implements UnreportedStepExecutor {
     }
 
     void printStats(PrintStream out) {
-        stats.printStats(out, runtimeOptions.isStrict());
+        synchronized (stats) {
+            stats.printStats(out, runtimeOptions.isStrict());
+        }
     }
 
     public void buildBackendWorlds(Reporter reporter, Set<Tag> tags, Scenario gherkinScenario) {
@@ -141,12 +153,15 @@ public class Runtime implements UnreportedStepExecutor {
         }
         undefinedStepsTracker.reset();
         //TODO: this is the initial state of the state machine, it should not go here, but into something else
-        skipNextStep = false;
-        scenarioResult = new ScenarioImpl(reporter, tags, gherkinScenario);
+        skipNextStep.set(Boolean.FALSE);
+        scenarioResult.set(new ScenarioImpl(reporter, tags, gherkinScenario));
     }
 
     public void disposeBackendWorlds(String scenarioDesignation) {
-        stats.addScenario(scenarioResult.getStatus(), scenarioDesignation);
+        String status = scenarioResult.get().getStatus();
+        synchronized (stats) {
+            stats.addScenario(status, scenarioDesignation);
+        }
         for (Backend backend : backends) {
             backend.disposeWorld();
         }
@@ -220,12 +235,12 @@ public class Runtime implements UnreportedStepExecutor {
             Match match = new Match(Collections.<Argument>emptyList(), hook.getLocation(false));
             stopWatch.start();
             try {
-                hook.execute(scenarioResult);
+                hook.execute(scenarioResult.get());
             } catch (Throwable t) {
                 error = t;
                 status = isPending(t) ? "pending" : Result.FAILED;
                 addError(t);
-                skipNextStep = true;
+                skipNextStep.set(Boolean.TRUE);
             } finally {
                 long duration = stopWatch.stop();
                 Result result = new Result(status, duration, error, DUMMY_ARG);
@@ -270,7 +285,7 @@ public class Runtime implements UnreportedStepExecutor {
             reporter.result(result);
             addStepToCounterAndResult(result);
             addError(e);
-            skipNextStep = true;
+            skipNextStep.set(Boolean.TRUE);
             return;
         }
 
@@ -280,15 +295,15 @@ public class Runtime implements UnreportedStepExecutor {
             reporter.match(Match.UNDEFINED);
             reporter.result(Result.UNDEFINED);
             addStepToCounterAndResult(Result.UNDEFINED);
-            skipNextStep = true;
+            skipNextStep.set(Boolean.TRUE);
             return;
         }
 
         if (runtimeOptions.isDryRun()) {
-            skipNextStep = true;
+            skipNextStep.set(Boolean.TRUE);
         }
 
-        if (skipNextStep) {
+        if (skipNextStep.get().booleanValue()) {
             addStepToCounterAndResult(Result.SKIPPED);
             reporter.result(Result.SKIPPED);
         } else {
@@ -302,7 +317,7 @@ public class Runtime implements UnreportedStepExecutor {
                 status = isPending(t) ? "pending" : Result.FAILED;
                 addError(t);
                 if (!match.continueNextStepsAnyway(t)) {
-                    skipNextStep = true;
+                    skipNextStep.set(Boolean.TRUE);
                 }
             } finally {
                 long duration = stopWatch.stop();
@@ -321,12 +336,16 @@ public class Runtime implements UnreportedStepExecutor {
     }
 
     private void addStepToCounterAndResult(Result result) {
-        scenarioResult.add(result);
-        stats.addStep(result);
+        scenarioResult.get().add(result);
+        synchronized (stats) {
+            stats.addStep(result);
+        }
     }
 
     private void addHookToCounterAndResult(Result result) {
-        scenarioResult.add(result);
-        stats.addHookTime(result.getDuration());
+        scenarioResult.get().add(result);
+        synchronized (stats) {
+            stats.addHookTime(result.getDuration());
+        }
     }
 }

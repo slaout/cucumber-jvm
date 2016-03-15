@@ -5,6 +5,7 @@ import cucumber.runtime.formatter.StepMatcher;
 import cucumber.runtime.io.ClasspathResourceLoader;
 import cucumber.runtime.io.Resource;
 import cucumber.runtime.model.CucumberFeature;
+import cucumber.runtime.threaded.ProxyFormatter;
 import gherkin.I18n;
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
@@ -99,11 +100,13 @@ public class TestHelper {
         final RuntimeGlue glue = createMockedRuntimeGlueThatMatchesTheSteps(stepsToResult, stepsToLocation, hooks);
         final Runtime runtime = new Runtime(resourceLoader, classLoader, asList(mock(Backend.class)), runtimeOptions, new StopWatch.Stub(stepHookDuration), glue);
 
+        ProxyFormatter proxy = new ProxyFormatter(reporter, formatter);
+
         for (CucumberFeature feature : features) {
-            feature.run(formatter, reporter, runtime);
+            feature.run(proxy, proxy, runtime);
         }
-        formatter.done();
-        formatter.close();
+        proxy.done();
+        proxy.close();
     }
 
     private static RuntimeGlue createMockedRuntimeGlueThatMatchesTheSteps(Map<String, Result> stepsToResult, Map<String, String> stepsToLocation,

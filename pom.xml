@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.slaout.fork.info.cukes</groupId>
     <artifactId>cucumber-jvm</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Cucumber-JVM Fork to Continue Next Steps for Predefined Exceptions</name>
     <url>https://github.com/slaout/cucumber-jvm/tree/continue-next-steps-for-exceptions</url>
