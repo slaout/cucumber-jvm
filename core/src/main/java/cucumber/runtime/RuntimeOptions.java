@@ -44,6 +44,7 @@ public class RuntimeOptions {
     private boolean dryRun;
     private boolean strict = false;
     private boolean monochrome = false;
+    private int threads = 1;
     private SnippetType snippetType = SnippetType.UNDERSCORE;
     private boolean pluginNamesInstantiated;
 
@@ -129,6 +130,9 @@ public class RuntimeOptions {
                 strict = !arg.startsWith("--no-");
             } else if (arg.equals("--no-monochrome") || arg.equals("--monochrome") || arg.equals("-m")) {
                 monochrome = !arg.startsWith("--no-");
+            } else if (arg.equals("--threads")) {
+                String nextArg = args.remove(0);
+                threads = Integer.parseInt(nextArg);
             } else if (arg.equals("--snippets")) {
                 String nextArg = args.remove(0);
                 snippetType = SnippetType.fromString(nextArg);
@@ -342,6 +346,10 @@ public class RuntimeOptions {
 
     public boolean isMonochrome() {
         return monochrome;
+    }
+
+    public int getThreads() {
+        return threads;
     }
 
     public SnippetType getSnippetType() {

@@ -33,6 +33,7 @@ public class RuntimeOptionsFactory {
             if (options != null) {
                 addDryRun(options, args);
                 addMonochrome(options, args);
+                addThreads(options, args);
                 addTags(options, args);
                 addPlugins(options, args);
                 addStrict(options, args);
@@ -69,6 +70,13 @@ public class RuntimeOptionsFactory {
     private void addMonochrome(CucumberOptions options, List<String> args) {
         if (options.monochrome() || runningInEnvironmentWithoutAnsiSupport()) {
             args.add("--monochrome");
+        }
+    }
+
+    private void addThreads(CucumberOptions options, List<String> args) {
+        if (options.threads() > 1) {
+            args.add("--threads");
+            args.add(String.valueOf(options.threads()));
         }
     }
 

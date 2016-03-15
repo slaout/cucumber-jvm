@@ -54,6 +54,12 @@ public @interface CucumberOptions {
     boolean monochrome() default false;
 
     /**
+     * @return the number of parallel threads to run scenarios on (consider using tags starting with {@code @synchronized-} on scenarios to make
+     *         sure a group of scenarios do not run concurrently)
+     */
+    int threads() default 1;
+
+    /**
      * Specify a patternfilter for features or scenarios
      *
      * @return a list of patterns

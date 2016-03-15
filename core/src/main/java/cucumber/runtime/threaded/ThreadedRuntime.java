@@ -23,7 +23,8 @@ public class ThreadedRuntime {
 
     private static final String TAG_SYNCHRONIZED = "@synchronized-";
 
-    public static void run(final List<CucumberFeature> features, final Formatter formatter, final Reporter reporter, final Runtime runtime) {
+    public static void run(final List<CucumberFeature> features, final Formatter formatter, final Reporter reporter, final Runtime runtime,
+            int threadCount) {
 
         ExecutionModel model = buildModel(features);
         System.out.println("============");
@@ -32,7 +33,6 @@ public class ThreadedRuntime {
 
         PlaybackFormatter playback = new PlaybackFormatter();
 
-        int threadCount = 4;
         if (threadCount > 1) {
             ExecutorService executor = Executors.newFixedThreadPool(threadCount);
             // Add @synchronized-* first, as they are the least parallelizable

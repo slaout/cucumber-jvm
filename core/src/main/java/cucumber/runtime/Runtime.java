@@ -122,9 +122,9 @@ public class Runtime implements UnreportedStepExecutor {
 
         glue.reportStepDefinitions(stepDefinitionReporter);
 
-        int threads = 2;
+        int threads = runtimeOptions.getThreads();
         if (threads > 1) {
-            ThreadedRuntime.run(features, formatter, reporter, this);
+            ThreadedRuntime.run(features, formatter, reporter, this, threads);
         } else {
             for (CucumberFeature cucumberFeature : features) {
                 cucumberFeature.run(formatter, reporter, this);
