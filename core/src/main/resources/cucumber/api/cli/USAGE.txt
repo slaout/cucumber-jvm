@@ -17,6 +17,10 @@ Options:
   -n, --name REGEXP                      Only run scenarios whose names match REGEXP.
   -d, --[no-]-dry-run                    Skip execution of glue code.
   -m, --[no-]-monochrome                 Don't colour terminal output.
+  -r, --threads COUNT                    The number of parallel threads to run scenarios
+                                         on (consider using tags starting with
+                                         @synchronized- on scenarios to make sure a group
+                                         of scenarios do not run concurrently)
   -s, --[no-]-strict                     Treat undefined and pending steps as errors.
       --snippets [underscore|camelcase]  Naming convention for generated snippets.
                                          Defaults to underscore.

@@ -130,7 +130,7 @@ public class RuntimeOptions {
                 strict = !arg.startsWith("--no-");
             } else if (arg.equals("--no-monochrome") || arg.equals("--monochrome") || arg.equals("-m")) {
                 monochrome = !arg.startsWith("--no-");
-            } else if (arg.equals("--threads")) {
+            } else if (arg.equals("--threads") || arg.equals("-r")) {
                 String nextArg = args.remove(0);
                 threads = Integer.parseInt(nextArg);
             } else if (arg.equals("--snippets")) {
