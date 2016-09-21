@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.slaout.fork.info.cukes</groupId>
+        <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
         <artifactId>cucumber-jvm</artifactId>
         <relativePath>../pom.xml</relativePath>
         <version>1.2.4-SNAPSHOT</version>
@@ -14,7 +14,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.slaout.fork.info.cukes</groupId>
+            <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
             <artifactId>cucumber-core</artifactId>
         </dependency>
         <dependency>
@@ -32,7 +32,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.slaout.fork.info.cukes</groupId>
+            <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
             <artifactId>cucumber-junit</artifactId>
             <scope>test</scope>
         </dependency>

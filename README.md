@@ -18,7 +18,7 @@ If another exception is thrown, then the next steps are not executed.
 This works only for Java. This is not implemented for other JVM languages. If you need them, you're encouraged to [compare the code of this branch with cucumber-jvm master branch](https://github.com/cucumber/cucumber-jvm/compare/master...slaout:continue-next-steps-for-exceptions?expand=1) to see how it's implemented (it really only a few lines of code). Feel free to post patches of pull requests to make it work with other languages: I did not have the time not the knowledge to implement the solution for all languages.
 
 ## Usage
-This project is based on Cucumber-JVM 1.2.4, and all of its artifactId are available in the new groupId "com.github.slaout.fork.info.cukes".
+This project is based on Cucumber-JVM 1.2.4, and all of its artifactId are available in the new groupId "com.github.slaout.fork.info.cukesthreads".
 
 First add the following repository to your user's settings.xml or to your project's pom.xml:
 ```xml
@@ -45,22 +45,22 @@ First add the following repository to your user's settings.xml or to your projec
 Then include the following dependencies in your project's pom.xml:
 ```xml
 <dependency>
-  <groupId>com.github.slaout.fork.info.cukes</groupId>
+  <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
   <artifactId>cucumber-core</artifactId>
   <version>1.2.4-SNAPSHOT</version>
 </dependency>
 <dependency>
-  <groupId>com.github.slaout.fork.info.cukes</groupId>
+  <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
   <artifactId>cucumber-java</artifactId>
   <version>1.2.4-SNAPSHOT</version>
 </dependency>
 <dependency>
-  <groupId>com.github.slaout.fork.info.cukes</groupId>
+  <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
   <artifactId>cucumber-spring</artifactId>
   <version>1.2.4-SNAPSHOT</version>
 </dependency>
 <dependency>
-  <groupId>com.github.slaout.fork.info.cukes</groupId>
+  <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
   <artifactId>cucumber-junit</artifactId>
   <version>1.2.4-SNAPSHOT</version>
 </dependency>

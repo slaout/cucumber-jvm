@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.slaout.fork.info.cukes</groupId>
+    <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
     <artifactId>cucumber-jvm</artifactId>
     <version>1.2.4-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -122,52 +122,52 @@
                 <version>${gherkin.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-java</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-spring</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-osgi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-groovy</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-clojure</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-junit</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-testng</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-picocontainer</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-scala_2.11</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -187,12 +187,12 @@
                 <version>${picocontainer.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>cucumber-android</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.slaout.fork.info.cukes</groupId>
+                <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
                 <artifactId>android-examples</artifactId>
                 <version>${project.version}</version>
             </dependency>
