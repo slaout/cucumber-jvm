@@ -64,6 +64,17 @@ Then include the following dependencies in your project's pom.xml:
   <artifactId>cucumber-junit</artifactId>
   <version>1.2.4-SNAPSHOT</version>
 </dependency>
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>4.0.2.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>4.0.2.RELEASE</version>
+</dependency>
 ```
 Yes, it is marked as SNAPSHOT, but this is the official final 1.2.4 realease, with the little fork additions.
 My time was limited on this fork in my company, so for the moment, I did not complete all the requierements to publish a non-SNAPSHOT release and to publish it on Maven Central.
