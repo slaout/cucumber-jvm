@@ -1,6 +1,7 @@
 package cucumber.runtime.java;
 
 import cucumber.api.java.ContinueNextStepsFor;
+import cucumber.api.java.ContinueNextStepsOnException;
 import cucumber.api.java8.StepdefBody;
 import cucumber.runtime.JdkPatternArgumentMatcher;
 import cucumber.runtime.ParameterInfo;
@@ -98,6 +99,9 @@ public class Java8StepDefinition implements StepDefinition {
     @Override
     public boolean continueNextStepsAnyway(Throwable throwable) {
         for (Annotation annotation : method.getAnnotations()) {
+            if (annotation instanceof ContinueNextStepsOnException) {
+                return true;
+            }
             if (annotation instanceof ContinueNextStepsFor) {
                 for (Class<? extends Throwable> annotationThrowableClass : ((ContinueNextStepsFor) annotation).value()) {
                     if (annotationThrowableClass.isAssignableFrom(throwable.getClass())) {

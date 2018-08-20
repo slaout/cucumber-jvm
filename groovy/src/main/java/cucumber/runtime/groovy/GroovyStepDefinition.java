@@ -94,7 +94,7 @@ public class GroovyStepDefinition implements StepDefinition {
     @Override
     public boolean continueNextStepsAnyway(Throwable throwable) {
         // TODO How to handle annotations in Groovy?
-        // If not possible, we could add a ContinueNextStepsException (and make it continueAnyway
+        // If not possible, we could add a ContinueNextStepsOnException (and make it continueAnyway
         // by default, without the need of an annotation)
         return false;
     }
