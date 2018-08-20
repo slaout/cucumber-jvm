@@ -16,7 +16,13 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LocalizedXStreams {
-    private final Map<Locale, LocalizedXStream> xStreamsByLocale = new HashMap<Locale, LocalizedXStream>();
+    // XStream is thread-safe, but some converters below are using non-thread-safe objects, like NumberFormat!
+    private final ThreadLocal<Map<Locale, LocalizedXStream>> xStreamsByLocale = new ThreadLocal<Map<Locale, LocalizedXStream>>() {
+        @Override
+        protected Map<Locale, LocalizedXStream> initialValue() {
+            return new HashMap<Locale, LocalizedXStream>();
+        }
+    };
     private final ClassLoader classLoader;
 
     public LocalizedXStreams(ClassLoader classLoader) {
@@ -24,10 +30,10 @@ public class LocalizedXStreams {
     }
 
     public LocalizedXStream get(Locale locale) {
-        LocalizedXStream xStream = xStreamsByLocale.get(locale);
+        LocalizedXStream xStream = xStreamsByLocale.get().get(locale);
         if (xStream == null) {
             xStream = newXStream(locale);
-            xStreamsByLocale.put(locale, xStream);
+            xStreamsByLocale.get().put(locale, xStream);
         }
         return xStream;
     }
