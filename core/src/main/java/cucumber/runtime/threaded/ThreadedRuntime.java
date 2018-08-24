@@ -27,9 +27,9 @@ public class ThreadedRuntime {
             int threadCount) {
 
         ExecutionModel model = buildModel(features);
-        System.out.println("============");
-        System.out.println(model);
-        System.out.println("============");
+//        System.out.println("============");
+//        System.out.println(model);
+//        System.out.println("============");
 
         PlaybackFormatter playback = new PlaybackFormatter();
 
@@ -38,7 +38,7 @@ public class ThreadedRuntime {
             // Add @synchronized-* first, as they are the least parallelizable
             for (Entry<String, ExecutionEntry> entry : model.getEntries().entrySet()) {
                 if (entry.getKey().startsWith(TAG_SYNCHRONIZED)) {
-                    System.out.println("Planning " + entry.getValue() + "...");
+//                    System.out.println("Planning " + entry.getValue() + "...");
                     executor.execute(new ScenarioExecutionRunnable(runtime, entry.getValue()));
                 }
             }
@@ -48,14 +48,14 @@ public class ThreadedRuntime {
                 for (ExecutableScenario executableScenario : nonSynchronizedEntry.getScenarios()) {
                     ExecutionEntry executionEntry = new ExecutionEntry();
                     executionEntry.getScenarios().add(executableScenario);
-                    System.out.println("Planning " + executionEntry + "...");
+//                    System.out.println("Planning " + executionEntry + "...");
                     executor.execute(new ScenarioExecutionRunnable(runtime, executionEntry));
                 }
             }
             executor.shutdown();
             while (!executor.isTerminated()) {
             }
-            System.out.println("Finished all threads");
+//            System.out.println("Finished all threads");
 
             // Merge all formatter outputs
 

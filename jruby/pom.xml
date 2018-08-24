@@ -5,7 +5,7 @@
         <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
         <artifactId>cucumber-jvm</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>1.2.4-SNAPSHOT</version>
+        <version>1.2.4</version>
     </parent>
 
     <artifactId>cucumber-jruby</artifactId>
@@ -179,12 +179,12 @@ gherkin.I18n.all.each { i18n ->
                             </target>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!--execution>
                         <id>deploy-gem</id>
                         <phase>deploy</phase>
                         <configuration>
                             <target unless="no.gem.deploy">
-                                <!-- install the jruby-openssl gem first! -->
+                                < ! - - install the jruby-openssl gem first! - - >
                                 <echo message="installing jruby-openssl..." />
                                 <java jar="${maven.dependency.org.jruby.jruby-complete.jar.path}" failonerror="true" fork="true">
                                     <env key="PATH" value="" />
@@ -192,13 +192,13 @@ gherkin.I18n.all.each { i18n ->
                                     <arg value="gem" />
                                     <arg value="install" />
                                     <arg value="jruby-openssl" />
-                                    <arg value="--no-rdoc" />
-                                    <arg value="--no-ri" />
+                                    <arg value="- -no-rdoc" />
+                                    <arg value="- -no-ri" />
                                     <arg value="-i" />
                                     <arg value="${basedir}/target/gems" />
                                 </java>
 
-                                <!-- publish the gem to rubygems.org -->
+                                < ! - - publish the gem to rubygems.org - - >
                                 <echo message="Publishing Gem" />
                                 <java jar="${maven.dependency.org.jruby.jruby-complete.jar.path}" failonerror="true" fork="true">
                                     <env key="PATH" value="" />
@@ -213,7 +213,7 @@ gherkin.I18n.all.each { i18n ->
                         <goals>
                             <goal>run</goal>
                         </goals>
-                    </execution>
+                    </execution-->
                 </executions>
             </plugin>
 

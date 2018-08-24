@@ -1,68 +1,78 @@
-# Cucumber-JVM Fork to Continue Next Steps for Predefined Exceptions
-The whole purpose of this fork is to be able to continue the execution of the next steps of a scenario when one step fails and we know the next ones still can be executed.
+# Cucumber-JVM Fork to Continue Next Steps for Some Exceptions + Run Scenarios in Parallel
+This fork enables two new usages:
+
+* continue execution on failures of some steps;
+* run scenarios in parallel, with some synchronization mechanisms.
+
+WARNING: Only the Java language is supported.
+WARNING: Only the Spring dependency injection is supported.
+
+## Continue Next Steps for Predefined or All Exceptions
+The first purpose of this fork is to be able to continue the execution of the next steps of a scenario when one step fails and we know the next ones still can be executed safely.
 
 This possibility is disabled by default.
-It is up to the step definition developer to declare if the step failure will not impede the next steps.
+It is up to the step definition developer to declare if the failure of a step will not impede the next steps.
 
 This is the case when you have an expensive @Given and/or @When, and you want to execute a lot of @Then checks.
 In this case, the failure of one of the checks will let the other independent checks to run as well: no failure is hidden by a previous failure.
-The failed step is still marked as failed in the execution result.
+The failed step is still marked as failed in the execution result, and the scenario as a whole is failed as well.
 
-To mark a step as being unimportant for the next steps, you need to annotate the step definition with the following annotation:
-@ContinueNextStepsFor({AssertionError.class}) or @ContinueNextStepsOnException
-If another exception is thrown, then the next steps are not executed.
+To mark a step as being unimportant for the next steps, you need to annotate the step definition with one of the following annotations:
+
+* @ContinueNextStepsFor({AssertionError.class}) : if another exception is thrown, then the next steps are not executed
+* @ContinueNextStepsOnException : no matter the exception class, next steps will always be executed
 
 ![Screenshot](/fork-purpose.png)
 
+## Run Scenarios in Parallel
+The second purpose of this fork is to be able to run scenarios in parallel, with some synchronization mechanisms.
+
+All scenarios are put in a queue, and a thread-pool runs them as fast as possible. +
+Compared to executing *features* in parallel, this scenario-based parallelization allows high thread efficiency. +
+This is especially the case when you have a lot of fast-to-execute feature files, and one big/slow feature at the end: threads would not be used efficiently with a scenario-based parallelization.
+
+You can also tag scenarios with tags starting with "@synchronized-" to make sure the scenarios with the same synchronized tag name will NOT run in parallel. +
+Eg. 3 scenarios with @synchronized-foo will run in a single thread, never in parallel, and 4 other scenarios with @synchronized-bar will run in a serial-fashion in another thread. +
+Note: scenarios with @synchronized-foo CAN run in parallel with scenarios tagged with @synchronized-bar: the "foo" and "bar" suffixes are up to you, to place scenarios is the right isolation group. +
+
+A small note about the implementation: sycnrhonized scenarios are put first in the thread-pool queue. +
+This is to mitigate or avoid the low thread efficiency discussed above, as some @synchronized-foobar tags could contain a lot of scenarios to be executed in serie by a single thread.
+
+The produced report.json is aggregated as if all scenarios ran in sequential order (but they can have run in any order). +
+As a result, parallel run is not supported for IDE JUnit panels: the aggregation can only take place at the very end of the process, to ensure all scenarios are reported in the order they appear in files, not in the execution order.
+
+Note: you can use Spring to inject your dependencies: each scenario of each thread will get its own scopped beans: there is no concurrent access problems to care about.
+
+To run scenarios in parallel, just use the "--threads X" (or "-r X") option when launching the CLI. +
+If X is 1, threading is disabled and Cucumber will run like it used to work.
+
 ## REALLY IMPORTANT
-This works only for Java. This is not implemented for other JVM languages. If you need them, you're encouraged to [compare the code of this branch with cucumber-jvm master branch](https://github.com/cucumber/cucumber-jvm/compare/master...slaout:continue-next-steps-for-exceptions?expand=1) to see how it's implemented (it really only a few lines of code). Feel free to post patches of pull requests to make it work with other languages: I did not have the time not the knowledge to implement the solution for all languages.
+This works only for Java. This is not implemented for other JVM languages. If you need them, you're encouraged to [compare the code of this branch with cucumber-jvm master branch](https://github.com/cucumber/cucumber-jvm/compare/v1.2.4...slaout:parallel-scenarios-execution-1.2.4) to see how it's implemented (it really only a few lines of code). Feel free to post patches of pull requests to make it work with other languages: I did not have the time not the knowledge to implement the solution for all languages.
 
 ## Usage
 This project is based on Cucumber-JVM 1.2.4, and all of its artifactId are available in the new groupId "com.github.slaout.fork.info.cukesthreads".
 
-First add the following repository to your user's settings.xml or to your project's pom.xml:
-```xml
-<repositories>
-  <repository>
-    <id>OSSRH</id>
-    <name>Open Source Project Repository Hosting</name>
-    <releases>
-      <enabled>true</enabled>
-      <updatePolicy>always</updatePolicy>
-      <checksumPolicy>warn</checksumPolicy>
-    </releases>
-    <snapshots>
-      <enabled>true</enabled>
-      <updatePolicy>always</updatePolicy>
-      <checksumPolicy>warn</checksumPolicy>
-    </snapshots>
-    <url>https://oss.sonatype.org/content/groups/public/</url>
-    <layout>default</layout>
-  </repository>
-</repositories>
-```
-
-Then include the following dependencies in your project's pom.xml:
+Just include the following dependencies in your project's pom.xml (only the groupId changed compared to the official Cucumber distribution):
 ```xml
 <dependency>
   <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
   <artifactId>cucumber-core</artifactId>
-  <version>1.2.4-SNAPSHOT</version>
+  <version>1.2.4</version>
 </dependency>
 <dependency>
   <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
   <artifactId>cucumber-java</artifactId>
-  <version>1.2.4-SNAPSHOT</version>
+  <version>1.2.4</version>
 </dependency>
 <dependency>
   <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
   <artifactId>cucumber-spring</artifactId>
-  <version>1.2.4-SNAPSHOT</version>
+  <version>1.2.4</version>
 </dependency>
 <dependency>
   <groupId>com.github.slaout.fork.info.cukesthreads</groupId>
   <artifactId>cucumber-junit</artifactId>
-  <version>1.2.4-SNAPSHOT</version>
+  <version>1.2.4</version>
 </dependency>
 
 <dependency>
@@ -76,8 +86,6 @@ Then include the following dependencies in your project's pom.xml:
     <version>4.0.2.RELEASE</version>
 </dependency>
 ```
-Yes, it is marked as SNAPSHOT, but this is the official final 1.2.4 realease, with the little fork additions.
-My time was limited on this fork in my company, so for the moment, I did not complete all the requierements to publish a non-SNAPSHOT release and to publish it on Maven Central.
 
 ## Recommendations for Using the Annotation
 As you know, "with great power comes great responsibility".

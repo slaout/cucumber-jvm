@@ -67,9 +67,9 @@ public class PlaybackFormatter implements Reporter, Formatter {
         }
     }
 
-    private static void writeLog(String logLine) {
-        System.out.println("[PlaybackFormatter] " + logLine);
-    }
+//    private static void writeLog(String logLine) {
+//        System.out.println("[PlaybackFormatter] " + logLine);
+//    }
 
     private void addEventRecord(Class<?> iface, String methodName, Class<?>[] parameterTypes, Object[] arguments) {
         try {
@@ -87,7 +87,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void syntaxError(String state, String event, List<String> legalEvents, String uri, Integer line) {
-        writeLog("Formatter.syntaxError(" + state + ", " + event + ", " + legalEvents + ", " + uri + ", " + line + ")");
+//        writeLog("Formatter.syntaxError(" + state + ", " + event + ", " + legalEvents + ", " + uri + ", " + line + ")");
         addEventRecord(Formatter.class, "syntaxError", //
                 new Class[] {String.class, String.class, List.class, String.class, Integer.class }, //
                 new Object[] {state, event, legalEvents, uri, line });
@@ -95,7 +95,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void uri(String uri) {
-        writeLog("Formatter.uri(" + uri + ")");
+//        writeLog("Formatter.uri(" + uri + ")");
         addEventRecord(Formatter.class, "uri", //
                 new Class[] {String.class }, //
                 new Object[] {uri });
@@ -103,7 +103,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void feature(Feature feature) {
-        writeLog("Formatter.feature(" + feature + ")");
+//        writeLog("Formatter.feature(" + feature + ")");
         addEventRecord(Formatter.class, "feature", //
                 new Class[] {Feature.class }, //
                 new Object[] {feature });
@@ -111,7 +111,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void scenarioOutline(ScenarioOutline scenarioOutline) {
-        writeLog("Formatter.scenarioOutline(" + scenarioOutline + ")");
+//        writeLog("Formatter.scenarioOutline(" + scenarioOutline + ")");
         addEventRecord(Formatter.class, "scenarioOutline", //
                 new Class[] {ScenarioOutline.class }, //
                 new Object[] {scenarioOutline });
@@ -119,7 +119,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void examples(Examples examples) {
-        writeLog("Formatter.examples(" + examples + ")");
+//        writeLog("Formatter.examples(" + examples + ")");
         addEventRecord(Formatter.class, "examples", //
                 new Class[] {Examples.class }, //
                 new Object[] {examples });
@@ -127,7 +127,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void startOfScenarioLifeCycle(Scenario scenario) {
-        writeLog("Formatter.startOfScenarioLifeCycle(" + scenario + ")");
+//        writeLog("Formatter.startOfScenarioLifeCycle(" + scenario + ")");
         addEventRecord(Formatter.class, "startOfScenarioLifeCycle", //
                 new Class[] {Scenario.class }, //
                 new Object[] {scenario });
@@ -135,7 +135,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void background(Background background) {
-        writeLog("Formatter.background(" + background + ")");
+//        writeLog("Formatter.background(" + background + ")");
         addEventRecord(Formatter.class, "background", //
                 new Class[] {Background.class }, //
                 new Object[] {background });
@@ -143,7 +143,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void scenario(Scenario scenario) {
-        writeLog("Formatter.scenario(" + scenario + ")");
+//        writeLog("Formatter.scenario(" + scenario + ")");
         addEventRecord(Formatter.class, "scenario", //
                 new Class[] {Scenario.class }, //
                 new Object[] {scenario });
@@ -151,7 +151,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void step(Step step) {
-        writeLog("Formatter.step(" + step + ")");
+//        writeLog("Formatter.step(" + step + ")");
         addEventRecord(Formatter.class, "step", //
                 new Class[] {Step.class }, //
                 new Object[] {step });
@@ -159,7 +159,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void endOfScenarioLifeCycle(Scenario scenario) {
-        writeLog("Formatter.endOfScenarioLifeCycle(" + scenario + ")");
+//        writeLog("Formatter.endOfScenarioLifeCycle(" + scenario + ")");
         addEventRecord(Formatter.class, "endOfScenarioLifeCycle", //
                 new Class[] {Scenario.class }, //
                 new Object[] {scenario });
@@ -167,7 +167,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void done() {
-        writeLog("Formatter.done()");
+//        writeLog("Formatter.done()");
         addEventRecord(Formatter.class, "done", //
                 new Class[] {}, //
                 new Object[] {});
@@ -175,7 +175,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void close() {
-        writeLog("Formatter.close()");
+//        writeLog("Formatter.close()");
         addEventRecord(Formatter.class, "close", //
                 new Class[] {}, //
                 new Object[] {});
@@ -183,7 +183,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void eof() {
-        writeLog("Formatter.eof()");
+//        writeLog("Formatter.eof()");
         addEventRecord(Formatter.class, "eof", //
                 new Class[] {}, //
                 new Object[] {});
@@ -193,7 +193,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void before(Match match, Result result) {
-        writeLog("Reporter.before(" + match + ", " + result + ")");
+//        writeLog("Reporter.before(" + match + ", " + result + ")");
         addEventRecord(Reporter.class, "before", //
                 new Class[] {Match.class, Result.class }, //
                 new Object[] {match, result });
@@ -201,7 +201,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void result(Result result) {
-        writeLog("Reporter.result(" + result + ")");
+//        writeLog("Reporter.result(" + result + ")");
         addEventRecord(Reporter.class, "result", //
                 new Class[] {Result.class }, //
                 new Object[] {result });
@@ -209,7 +209,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void after(Match match, Result result) {
-        writeLog("Reporter.after(" + match + ", " + result + ")");
+//        writeLog("Reporter.after(" + match + ", " + result + ")");
         addEventRecord(Reporter.class, "after", //
                 new Class[] {Match.class, Result.class }, //
                 new Object[] {match, result });
@@ -217,7 +217,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void match(Match match) {
-        writeLog("Reporter.match(" + match + ")");
+//        writeLog("Reporter.match(" + match + ")");
         addEventRecord(Reporter.class, "match", //
                 new Class[] {Match.class }, //
                 new Object[] {match });
@@ -225,7 +225,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void embedding(String mimeType, byte[] data) {
-        writeLog("Reporter.embedding(" + mimeType + ", " + data + ")");
+//        writeLog("Reporter.embedding(" + mimeType + ", " + data + ")");
         addEventRecord(Reporter.class, "embedding", //
                 new Class[] {String.class, byte[].class }, //
                 new Object[] {mimeType, data });
@@ -233,7 +233,7 @@ public class PlaybackFormatter implements Reporter, Formatter {
 
     @Override
     public void write(String text) {
-        writeLog("Reporter.write(" + text + ")");
+//        writeLog("Reporter.write(" + text + ")");
         addEventRecord(Reporter.class, "write", //
                 new Class[] {String.class }, //
                 new Object[] {text });

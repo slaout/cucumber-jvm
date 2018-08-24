@@ -16,13 +16,13 @@ public class ScenarioExecutionRunnable implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(" ** " + Thread.currentThread().getName() + ": start");
+//        System.out.println(" ** " + Thread.currentThread().getName() + ": start");
         // Run the scenarios that must be run in an anomic manner
         for (ExecutableScenario executableScenario : executionEntry.getScenarios()) {
             PlaybackFormatter playback = executableScenario.getPlaybackFormatter();
             executableScenario.getScenario().run(playback, playback, runtime);
         }
-        System.out.println(" ** " + Thread.currentThread().getName() + ": stop");
+//        System.out.println(" ** " + Thread.currentThread().getName() + ": stop");
     }
 
 }
